@@ -20,7 +20,7 @@ public class ProdutosDAO {
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
 
-    public void cadastrarProduto(ProdutosDTO produto) {
+    public boolean cadastrarProduto(ProdutosDTO produto) {
         String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
 
         try {
@@ -33,9 +33,12 @@ public class ProdutosDAO {
             prep.setString(3, produto.getStatus());
 
             prep.executeUpdate();
+            
+            return true;
 
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Erro ao cadastrar produto: " + erro.getMessage());
+            return false;
         }
     }
 
