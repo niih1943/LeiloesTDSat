@@ -1,18 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 
-/**
- *
- * @author Adm
- */
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+/**
+ *
+ * @author Adm
+ */
 public class ProdutosDAO {
 
     Connection conn;
@@ -37,7 +37,10 @@ public class ProdutosDAO {
             return true;
 
         } catch (Exception erro) {
-            JOptionPane.showMessageDialog(null, "Erro ao cadastrar produto: " + erro.getMessage());
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Erro ao cadastrar produto: " + erro.getMessage()
+            );
             return false;
         }
     }
@@ -95,6 +98,41 @@ public class ProdutosDAO {
             JOptionPane.showMessageDialog(
                     null,
                     "Erro ao listar produtos: " + erro.getMessage()
+            );
+        }
+
+        return listagem;
+    }
+
+    public ArrayList<ProdutosDTO> listarProdutosVendidos() {
+
+        listagem.clear();
+
+        String sql = "SELECT * FROM produtos WHERE status = 'Vendido'";
+
+        try {
+            conn = new conectaDAO().connectDB();
+
+            prep = conn.prepareStatement(sql);
+
+            resultset = prep.executeQuery();
+
+            while (resultset.next()) {
+
+                ProdutosDTO produto = new ProdutosDTO();
+
+                produto.setId(resultset.getInt("id"));
+                produto.setNome(resultset.getString("nome"));
+                produto.setValor(resultset.getInt("valor"));
+                produto.setStatus(resultset.getString("status"));
+
+                listagem.add(produto);
+            }
+
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Erro ao listar produtos vendidos: " + erro.getMessage()
             );
         }
 
